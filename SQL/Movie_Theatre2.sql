@@ -1,52 +1,29 @@
--- Theatre insertion query.
+-- Insert into customers table
+INSERT INTO customers (customer_name) VALUES ('John Doe'), ('Jane Smith');
 
--- Insert statement for customer
-INSERT INTO customer(
-	customer_id
-) VALUES(
-	1
-);
+-- Insert into movies table
+INSERT INTO movies (movie_name) VALUES ('Movie 1'), ('Movie 2');
 
--- Insert statement for tickets
--- I had a hard time getting TIMESTAMP to work. 
--- I tried 2017-01-01 00:00:00 in VALUES and
--- date_name in INSERT INTO (under room_id)
--- I ended up just inserting the data as a string.
-INSERT INTO tickets(
-	ticket_id,
-	movie_id,
-	movie_name,
-	room_id,
-	date_time
-) VALUES(
-	1,
-	1,
-	'John Wick',
-	1,
-	'20170101 00:00:00 AM'
-);
+-- Insert into snacks table
+INSERT INTO snacks (snack_name) VALUES ('Popcorn'), ('Soda');
 
--- Insert statement for concessions
-INSERT INTO concessions(
-	snack_name,
-	snack_id
-) VALUES(
-	'pizza',
-	1
-);
+-- Get IDs of inserted data
+DO $$ 
+DECLARE 
+    john_id INTEGER;
+    jane_id INTEGER;
+    movie1_id INTEGER;
+    movie2_id INTEGER;
+    popcorn_id INTEGER;
+    soda_id INTEGER;
+BEGIN
+    SELECT customer_id INTO john_id FROM customers WHERE customer_name = 'John Doe';
+    SELECT customer_id INTO jane_id FROM customers WHERE customer_name = 'Jane Smith';
+    SELECT movie_id INTO movie1_id FROM movies WHERE movie_name = 'Movie 1';
+    SELECT movie_id INTO movie2_id FROM movies WHERE movie_name = 'Movie 2';
+    SELECT snack_id INTO popcorn_id FROM snacks WHERE snack_name = 'Popcorn';
+    SELECT snack_id INTO soda_id FROM snacks WHERE snack_name = 'Soda';
 
--- Insert statement for movies
--- Also tried timestamp here.
-INSERT INTO movies(
-	movie_id,
-	movie_name,
-	room_id,
-	ticket_id,
-	date_time
-) VALUES(
-	1,
-	'John Wick',
-	1,
-	1,
-	'20170101 00:00:00 AM'
-)
+    -- Insert into tickets table
+    INSERT INTO tickets (movie_id, customer_id, date_time) VALUES (movie1_id, john_id, NOW()), (movie2_id, jane_id, NOW());
+END $$;

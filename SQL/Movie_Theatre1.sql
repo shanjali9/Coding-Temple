@@ -1,24 +1,25 @@
-CREATE TABLE "customer" (
-  "customer_id" SERIAL
+-- Customers table
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,
+    customer_name VARCHAR(100)
 );
 
-CREATE TABLE "movies" (
-  "movie_name" VARCHAR(100),
-  "room_id" SERIAL,
-  "movie_id" SERIAL,
-  "date_time" TIMESTAMP,
-  "ticket_id" SERIAL
+-- Movies table
+CREATE TABLE movies (
+    movie_id SERIAL PRIMARY KEY,
+    movie_name VARCHAR(100)
 );
 
-CREATE TABLE "concessions" (
-  "snack_name" VARCHAR(40),
-  "snack_id" SERIAL
+-- Snacks table
+CREATE TABLE snacks (
+    snack_id SERIAL PRIMARY KEY,
+    snack_name VARCHAR(40)
 );
 
-CREATE TABLE "tickets" (
-  "movie_name" VARCHAR(100),
-  "date_time" TIMESTAMP,
-  "room_id" SERIAL,
-  "movie_id" SERIAL,
-  "ticket_id" SERIAL
+-- Tickets table
+CREATE TABLE tickets (
+    ticket_id SERIAL PRIMARY KEY,
+    movie_id INTEGER REFERENCES movies(movie_id),
+    customer_id INTEGER REFERENCES customers(customer_id),
+    date_time TIMESTAMP
 );
